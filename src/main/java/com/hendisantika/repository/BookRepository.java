@@ -43,4 +43,7 @@ public class BookRepository {
         return books.get(id);
     }
 
+    public void update(Book book) {
+        books.put(book.getId(), book);
+    }
 }
