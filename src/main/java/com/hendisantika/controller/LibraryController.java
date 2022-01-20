@@ -1,6 +1,7 @@
 package com.hendisantika.controller;
 
 import com.hendisantika.repository.BookRepository;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,5 +53,13 @@ public class LibraryController {
     public String logout() throws ServletException {
         request.logout();
         return "redirect:/";
+    }
+
+    private void configCommonAttributes(Model model) {
+        model.addAttribute("name", getKeycloakSecurityContext().getIdToken().getGivenName());
+    }
+
+    private KeycloakSecurityContext getKeycloakSecurityContext() {
+        return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
     }
 }
