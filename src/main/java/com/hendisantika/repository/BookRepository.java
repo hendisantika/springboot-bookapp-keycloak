@@ -34,4 +34,8 @@ public class BookRepository {
         allBooks.sort(Comparator.comparing(Book::getId));
         return allBooks;
     }
+
+    public void create(Book book) {
+        books.put(book.getId(), book);
+    }
 }
