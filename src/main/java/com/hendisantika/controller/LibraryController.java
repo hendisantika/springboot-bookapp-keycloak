@@ -39,4 +39,11 @@ public class LibraryController {
         model.addAttribute("books", bookRepository.readAll());
         return "books";
     }
+
+    @GetMapping(value = "/manager")
+    public String getManager(Model model) {
+        configCommonAttributes(model);
+        model.addAttribute("books", bookRepository.readAll());
+        return "manager";
+    }
 }
