@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -45,5 +46,11 @@ public class LibraryController {
         configCommonAttributes(model);
         model.addAttribute("books", bookRepository.readAll());
         return "manager";
+    }
+
+    @GetMapping(value = "/logout")
+    public String logout() throws ServletException {
+        request.logout();
+        return "redirect:/";
     }
 }
