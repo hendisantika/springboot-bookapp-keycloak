@@ -38,4 +38,9 @@ public class BookRepository {
     public void create(Book book) {
         books.put(book.getId(), book);
     }
+
+    public Book read(String id) {
+        return books.get(id);
+    }
+
 }
