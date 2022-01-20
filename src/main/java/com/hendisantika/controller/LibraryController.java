@@ -2,6 +2,7 @@ package com.hendisantika.controller;
 
 import com.hendisantika.repository.BookRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,4 +27,8 @@ public class LibraryController {
         this.bookRepository = bookRepository;
     }
 
+    @GetMapping(value = "/")
+    public String getHome() {
+        return "index";
+    }
 }
