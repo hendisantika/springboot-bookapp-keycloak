@@ -8,3 +8,25 @@
 4. Import keycloak realm file
 5. Run the application: `mvn clean spring-boot:run`
 6. Open your favorite browser: http://localhost:8081
+
+### Image Screen shot
+
+Keycloak Login Page
+
+![Keycloak Login Page](img/login.png "Keycloak Login Page")
+
+Home Page
+
+![Home Page](img/home.png "Home Page")
+
+List Books Page
+
+![List Books Page](img/list.png "List Books Page")
+
+Manager Page
+
+![Manager Page](img/manager.png "Manager Page")
+
+Forbidden Page
+
+![Forbidden Page](img/forbidden.png "Forbidden Page")
