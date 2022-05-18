@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,6 +36,7 @@ public class LibraryController {
         return "index";
     }
 
+    @RolesAllowed({"librarian", "member"})
     @GetMapping(value = "/books")
     public String getBooks(Model model) {
         configCommonAttributes(model);

@@ -44,7 +44,7 @@
     <div class="starter-template">
         <h1>Hello <span th:text="${name}"></span></h1>
         <p class="lead">This page is protected. You have librarian privileges, so you can manage the library.</p>
-        <img class="img-fluid" src="/images/public-library-bookshelves-books.jpg" style="max-width:480px">
+        <img class="img-fluid" style="max-width:480px" th:src="@{/images/book-shelves.jpg}">
     </div>
 
 </main><!-- /.container -->
