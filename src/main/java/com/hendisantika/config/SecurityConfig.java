@@ -1,18 +1,11 @@
 package com.hendisantika.config;
 
-import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
-import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
-import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
-import org.keycloak.adapters.springsecurity.management.HttpSessionManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
-import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,8 +17,11 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
  * Time: 13.59
  * To change this template use File | Settings | File Templates.
  */
-@KeycloakConfiguration
-public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+//@KeycloakConfiguration
+@Slf4j
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
     /**
      * Registers the KeycloakAuthenticationProvider with the authentication manager.
      * <p>
@@ -40,15 +36,14 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
      * {@code grantedAuthorityMapper.setConvertToUpperCase(true); }.
      * The result will be: Librarian -> ROLE_LIBRARIAN.
      */
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) {
-        SimpleAuthorityMapper grantedAuthorityMapper = new SimpleAuthorityMapper();
-        grantedAuthorityMapper.setPrefix("ROLE_");
-
-        KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
-        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(grantedAuthorityMapper);
-        auth.authenticationProvider(keycloakAuthenticationProvider);
-    }
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) {
+//        SimpleAuthorityMapper grantedAuthorityMapper = new SimpleAuthorityMapper();
+//        grantedAuthorityMapper.setPrefix("ROLE_");
+//        KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(grantedAuthorityMapper);
+//        auth.authenticationProvider(keycloakAuthenticationProvider);
+//    }
 
     /**
      * Defines the session authentication strategy.
@@ -56,11 +51,11 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
      * RegisterSessionAuthenticationStrategy is used because this is a public application
      * from the Keycloak point of view.
      */
-    @Bean
-    @Override
-    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-        return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
-    }
+//    @Bean
+//    @Override
+//    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+//        return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
+//    }
 
     /**
      * Define an HttpSessionManager bean only if missing.
@@ -68,24 +63,25 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
      * This is necessary because since Spring Boot 2.1.0, spring.main.allow-bean-definition-overriding
      * is disabled by default.
      */
-    @Bean
-    @Override
-    @ConditionalOnMissingBean(HttpSessionManager.class)
-    protected HttpSessionManager httpSessionManager() {
-        return new HttpSessionManager();
-    }
+//    @Bean
+//    @Override
+//    @ConditionalOnMissingBean(HttpSessionManager.class)
+//    protected HttpSessionManager httpSessionManager() {
+//        return new HttpSessionManager();
+//    }
 
     /**
      * Define security constraints for the application resources.
      */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        super.configure(http);
-        http
-                .authorizeRequests()
-                .antMatchers("/books").hasAnyRole("member", "librarian")
-                .antMatchers("/static/images/**").permitAll()
-                .antMatchers("/manager").hasRole("librarian")
-                .anyRequest().permitAll();
+    @Bean
+    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        return http
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/books").hasAnyRole("member", "librarian")
+                        .requestMatchers("/static/images/**").permitAll()
+                        .requestMatchers("/manager").hasRole("librarian")
+                        .anyRequest().permitAll()
+                ).build();
+
     }
 }
