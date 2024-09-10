@@ -62,7 +62,7 @@
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-test-helper</artifactId>
-            <version>25.0.4</version>
+            <version>25.0.5</version>
         </dependency>
     </dependencies>
 
